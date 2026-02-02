@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魔法珍珠奶茶 - 喝了会变好</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 保留你原有的所有CSS样式，无修改 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffe6f2 0%, #e6f7ff 100%);
+            color: #5a3e36;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(165, 42, 42, 0.2);
+            padding: 30px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            color: #d2691e;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 0 #ffd700;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8b4513;
+            margin-bottom: 20px;
+        }
+        
+        .tea-icon {
+            font-size: 5rem;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .panel {
+            background: linear-gradient(to bottom right, #fff5ee, #fdf5e6);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.15);
+            height: 100%;
+            border: 3px dashed #ffb6c1;
+        }
+        
+        h2 {
+            color: #8b4513;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .ingredient-list {
+            list-style-type: none;
+        }
+        
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 50px;
+            transition: all 0.3s;
+            border-left: 5px solid transparent;
+        }
+        
+        .ingredient-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #ff69b4;
+        }
+        
+        .ingredient-icon {
+            font-size: 1.8rem;
+            margin-right: 15px;
+            width: 50px;
+            text-align: center;
+        }
+        
+        .ingredient-text {
+            flex: 1;
+        }
+        
+        .ingredient-name {
+            font-weight: bold;
+            color: #a0522d;
+            font-size: 1.2rem;
+        }
+        
+        .ingredient-magic {
+            color: #8a2be2;
+            font-size: 0.9rem;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #ff69b4, #ff8c00);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .tea-cup {
+            width: 200px;
+            height: 250px;
+            background: linear-gradient(to bottom, #f4a460 0%, #d2691e 100%);
+            border-radius: 0 0 100px 100px;
+            margin: 30px auto;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+            border: 10px solid #8b4513;
+            overflow: hidden;
+        }
+        
+        .tea-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, #a0522d 0%, #d2691e 30%, #ffd700 100%);
+            border-radius: 0 0 90px 90px;
+            transition: height 2s ease;
+            height: 0%;
+        }
+        
+        .bubble {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: bubble-float 4s infinite ease-in-out;
+        }
+        
+        @keyframes bubble-float {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+        }
+        
+        .happiness-meter {
+            width: 100%;
+            height: 30px;
+            background-color: #f0f0f0;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .happiness-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ff6b6b, #ffd93d, #6bcf7f);
+            border-radius: 15px;
+            width: 0%;
+            transition: width 2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .happiness-text {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+        
+        .result {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #fffacd, #e6fffa);
+            border-radius: 20px;
+            margin-top: 20px;
+            border: 3px solid #ffb6c1;
+            display: none; /* 初始隐藏结果面板 */
+        }
+        
+        .result h3 {
+            color: #8b4513;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .message {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #5a3e36;
+            margin-bottom: 15px;
+        }
+        
+        .encouragement {
+            font-style: italic;
+            color: #8a2be2;
+            font-size: 1.2rem;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+        }
+        
+        .effects-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .effect-badge {
+            background-color: #ffebcd;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: #8b4513;
+            border: 2px solid #ffb6c1;
+        }
+        
+        .stages {
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .stage-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: white;
+            border-radius: 10px;
+            border-left: 5px solid #ff69b4;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.5s;
+        }
+        
+        .stage-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .stage-number {
+            background-color: #ff69b4;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .magic-sparkle {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+            animation: sparkle 1s ease-in-out;
+        }
+        
+        @keyframes sparkle {
+            0% { opacity: 1; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(1); }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #8b4513;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .tea-cup {
+                width: 150px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-mug-hot"></i> 魔法珍珠奶茶</h1>
+            <div class="subtitle">一杯喝了会变好的神奇饮品</div>
+            <div class="tea-icon">🧋</div>
+            <p>选择魔法原料，冲泡属于你的快乐奶茶！</p>
+        </div>
+        
+        <div class="row">
+            <div class="column">
+                <div class="panel">
+                    <h2><i class="fas fa-hat-wizard"></i> 魔法原料</h2>
+                    <ul class="ingredient-list" id="ingredientList">
+                        <!-- 原料会通过JavaScript动态添加 -->
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="panel">
+                    <h2><i class="fas fa-wine-glass-alt"></i> 奶茶制作</h2>
+                    <div class="tea-cup" id="teaCup">
+                        <div class="tea-liquid" id="teaLiquid"></div>
+                    </div>
+                    
+                    <div class="happiness-text">
+                        幸福指数: <span id="happinessValue">0</span>%
+                    </div>
+                    <div class="happiness-meter">
+                        <div class="happiness-fill" id="happinessFill"></div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button class="btn" id="brewBtn">
+                            <i class="fas fa-magic"></i> 开始冲泡
+                        </button>
+                        <button class="btn" id="stirBtn" disabled>
+                            <i class="fas fa-stroopwafel"></i> 用爱搅拌
+                        </button>
+                        <button class="btn" id="drinkBtn" disabled>
+                            <i class="fas fa-glass-cheers"></i> 品尝奶茶
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result" id="resultPanel">
+            <h3><i class="fas fa-star"></i> 魔法生效！</h3>
+            <div class="message" id="resultMessage"></div>
+            
+            <div class="effects-list" id="effectsList">
+                <!-- 效果标签会动态添加 -->
+            </div>
+            
+            <div class="encouragement" id="encouragementText"></div>
+            
+            <div class="stages" id="drinkStages">
+                <h4><i class="fas fa-list-ol"></i> 品尝过程:</h4>
+                <!-- 品尝阶段会动态添加 -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>✨ 这杯虚拟奶茶虽然不能真的喝，但希望它能给你带来好心情！ ✨</p>
+        <p>记住：每一天都是喝奶茶的好日子！ <i class="fas fa-heart" style="color: #ff69b4;"></i></p>
+    </footer>
+
+    <script>
+        // 立即执行函数，确保代码在页面加载后运行
+        (function() {
+            console.log("魔法奶茶应用开始初始化...");
+            
+            // 魔法原料数据
+            const ingredients = [
+                { icon: "☀️", name: "阳光红茶", magic: "驱散阴霾", color: "#ff9900" },
+                { icon: "🌙", name: "月光牛奶", magic: "带来安宁", color: "#f0f8ff" },
+                { icon: "🌈", name: "彩虹糖浆", magic: "添加色彩", color: "#ff69b4" },
+                { icon: "⭐", name: "星星珍珠", magic: "闪闪发光", color: "#ffd700" },
+                { icon: "😊", name: "微笑椰果", magic: "甜蜜回忆", color: "#ffb6c1" },
+                { icon: "🛡️", name: "勇气布丁", magic: "增强信心", color: "#9370db" },
+                { icon: "🍀", name: "幸运冰沙", magic: "好运加持", color: "#32cd32" }
+            ];
+            
+            // 鼓励话语
+            const encouragements = [
+                "🌻 记住：每一天都是新的开始！",
+                "🌟 你有能力让今天变得美好！",
+                "💖 小小的珍珠奶茶，大大的幸福能量！",
+                "🎯 太阳会升起，生活也会继续！",
+                "🌊 像珍珠一样，经历磨练后更加Q弹美味！",
+                "🌼 你的存在本身就是一份礼物！",
+                "🎨 生活就像奶茶，可以调出自己喜欢的味道！",
+                "🚀 今天是你余生的第一天，让它变得精彩！"
+            ];
+            
+            // 品尝阶段
+            const drinkStages = [
+                "第一口：温暖的红茶唤醒味蕾",
+                "第二口：香甜的牛奶带来安慰", 
+                "第三口：Q弹的珍珠充满乐趣",
+                "第四口：魔法开始生效...",
+                "最后一口：感觉整个世界都变美好了！"
+            ];
+            
+            // 魔法效果
+            const magicEffects = [
+                "一天好心情", "心情变晴朗", "能量满格", 
+                "灵感涌现", "烦恼消失", "自信提升",
+                "好运连连", "压力消散"
+            ];
+
+            // 获取DOM元素
+            const ingredientList = document.getElementById('ingredientList');
+            const teaCup = document.getElementById('teaCup');
+            const teaLiquid = document.getElementById('teaLiquid');
+            const happinessValue = document.getElementById('happinessValue');
+            const happinessFill = document.getElementById('happinessFill');
+            const brewBtn = document.getElementById('brewBtn');
+            const stirBtn = document.getElementById('stirBtn');
+            const drinkBtn = document.getElementById('drinkBtn');
+            const resultPanel = document.getElementById('resultPanel');
+            const resultMessage = document.getElementById('resultMessage');
+            const effectsList = document.getElementById('effectsList');
+            const encouragementText = document.getElementById('encouragementText');
+            const drinkStagesEl = document.getElementById('drinkStages');
+            const container = document.querySelector('.container');
+            
+            // 初始化原料列表
+            function initIngredients() {
+                console.log("正在初始化原料列表...");
+                if (!ingredientList) {
+                    console.error("找不到元素 #ingredientList");
+                    return;
+                }
+                ingredientList.innerHTML = '';
+                ingredients.forEach(ingredient => {
+                    console.log("添加原料:", ingredient.name);
+                    const li = document.createElement('li');
+                    li.className = 'ingredient-item';
+                    li.innerHTML = `
+                        <div class="ingredient-icon">${ingredient.icon}</div>
+                        <div class="ingredient-text">
+                            <div class="ingredient-name">${ingredient.name}</div>
+                            <div class="ingredient-magic">${ingredient.magic}</div>
+                        </div>
+                    `;
+                    ingredientList.appendChild(li);
+                });
+                console.log("原料列表初始化完成，共添加", ingredients.length, "种原料");
+            }
+            
+            // 制作泡泡效果
+            function createBubbles() {
+                if (!teaCup) return;
+                // 清除已有的泡泡
+                const existingBubbles = document.querySelectorAll('.bubble');
+                existingBubbles.forEach(bubble => bubble.remove());
+                // 创建新的泡泡
+                for (let i = 0; i < 20; i++) {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    // 随机大小
+                    const size = Math.random() * 20 + 5;
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    // 随机位置
+                    bubble.style.left = `${Math.random() * 100}%`;
+                    bubble.style.bottom = '0';
+                    // 随机动画延迟
+                    bubble.style.animationDelay = `${Math.random() * 4}s`;
+                    teaCup.appendChild(bubble);
+                }
+            }
+
+            // 创建魔法闪光效果
+            function createSparkle(x, y) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'magic-sparkle';
+                sparkle.textContent = '✨';
+                sparkle.style.left = `${x}px`;
+                sparkle.style.top = `${y}px`;
+                container.appendChild(sparkle);
+                // 移除闪光元素
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1000);
+            }
+
+            // 冲泡奶茶
+            function brewTea() {
+                console.log("开始冲泡魔法奶茶...");
+                brewBtn.disabled = true;
+                // 填充奶茶液体
+                teaLiquid.style.height = '85%';
+                // 提升幸福指数到50%
+                setTimeout(() => {
+                    happinessFill.style.width = '50%';
+                    happinessValue.textContent = '50';
+                    // 创建泡泡
+                    createBubbles();
+                    // 启用搅拌按钮
+                    stirBtn.disabled = false;
+                    console.log("奶茶冲泡完成，可进行搅拌");
+                }, 2000);
+                // 点击位置创建闪光
+                brewBtn.addEventListener('click', (e) => {
+                    createSparkle(e.pageX, e.pageY);
+                }, { once: true });
+            }
+
+            // 搅拌奶茶
+            function stirTea() {
+                console.log("开始用爱搅拌奶茶...");
+                stirBtn.disabled = true;
+                // 增加泡泡数量
+                createBubbles();
+                // 幸福指数提升到80%
+                setTimeout(() => {
+                    happinessFill.style.width = '80%';
+                    happinessValue.textContent = '80';
+                    // 启用品尝按钮
+                    drinkBtn.disabled = false;
+                    console.log("奶茶搅拌完成，可进行品尝");
+                }, 1500);
+                // 搅拌时创建随机闪光
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * container.offsetWidth;
+                        const y = Math.random() * container.offsetHeight;
+                        createSparkle(x, y);
+                    }, Math.random() * 1500);
+                }
+            }
+
+            // 品尝奶茶
+            function drinkTea() {
+                console.log("开始品尝魔法奶茶...");
+                drinkBtn.disabled = true;
+                // 幸福指数拉满100%
+                happinessFill.style.width = '100%';
+                happinessValue.textContent = '100';
+                // 显示结果面板
+                setTimeout(() => {
+                    resultPanel.style.display = 'block';
+                    renderResult();
+                    console.log("品尝完成，魔法生效！");
+                }, 1000);
+            }
+
+            // 渲染品尝结果
+            function renderResult() {
+                // 随机结果文案
+                const randomMsg = `你品尝了一杯由${ingredients[Math.floor(Math.random() * ingredients.length)].name}和${ingredients[Math.floor(Math.random() * ingredients.length)].name}调制的魔法珍珠奶茶，瞬间感受到满满的幸福能量！`;
+                resultMessage.textContent = randomMsg;
+
+                // 随机生成3-5个魔法效果
+                const randomEffects = [];
+                const effectCount = Math.floor(Math.random() * 3) + 3;
+                const shuffledEffects = [...magicEffects].sort(() => 0.5 - Math.random());
+                for (let i = 0; i < effectCount; i++) {
+                    randomEffects.push(shuffledEffects[i]);
+                }
+                // 渲染效果标签
+                effectsList.innerHTML = '';
+                randomEffects.forEach(effect => {
+                    const badge = document.createElement('div');
+                    badge.className = 'effect-badge';
+                    badge.textContent = effect;
+                    effectsList.appendChild(badge);
+                });
+
+                // 随机鼓励语
+                encouragementText.textContent = encouragements[Math.floor(Math.random() * encouragements.length)];
+
+                // 渲染品尝阶段（逐行显示）
+                drinkStagesEl.innerHTML = '<h4><i class="fas fa-list-ol"></i> 品尝过程:</h4>';
+                drinkStages.forEach((stage, index) => {
+                    const stageItem = document.createElement('div');
+                    stageItem.className = 'stage-item';
+                    stageItem.innerHTML = `
+                        <div class="stage-number">${index + 1}</div>
+                        <div>${stage}</div>
+                    `;
+                    drinkStagesEl.appendChild(stageItem);
+                    // 逐行显示动画
+                    setTimeout(() => {
+                        stageItem.classList.add('visible');
+                    }, 300 * (index + 1));
+                });
+            }
+
+            // 绑定按钮事件
+            function bindEvents() {
+                brewBtn.addEventListener('click', brewTea);
+                stirBtn.addEventListener('click', stirTea);
+                drinkBtn.addEventListener('click', drinkTea);
+                // 点击原料创建闪光
+                ingredientList.addEventListener('click', (e) => {
+                    if (e.target.closest('.ingredient-item')) {
+                        createSparkle(e.pageX, e.pageY);
+                    }
+                });
+            }
+
+            // 初始化应用
+            function initApp() {
+                initIngredients();
+                bindEvents();
+                console.log("魔法奶茶应用初始化完成，准备就绪！");
+            }
+
+            // 页面加载完成后初始化
+            window.addEventListener('DOMContentLoaded', initApp);
+
+        })();
+    </script>
+</body>
+</html>
